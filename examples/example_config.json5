@@ -1,0 +1,34 @@
+{
+  // -----------------------------------------------------------------------
+  // usans-correct configuration
+  // JSON5: // line comments and /* block comments */ are supported.
+  // -----------------------------------------------------------------------
+
+  // *** CHANGE THIS to your measured sample transmission. ***
+  // It is a number between 0 and 1 (e.g. 0.85 means 85 % passed through).
+  "transmission": 0.5,
+
+  // Number of orthonormal basis functions. 12 is a good default.
+  // Increase to 16 if your profile has sharp features; reduce to 6 for
+  // very noisy data.
+  "basis_size": 12,
+
+  // Maximum number of Poisson scattering orders. Leave at 10.
+  "n_orders": 10,
+
+  // Internal Q scaling. null = 1 / median(Q) (recommended).
+  "length_scale": null,
+
+  // Angular quadrature points for the 2-D isotropic convolution.
+  // 32 is accurate for typical smooth profiles.
+  "n_phi": 32,
+
+  // Force non-negative recovered profile (bounds on basis coefficients).
+  // false works for most samples.
+  "enforce_nonneg": false,
+
+  // Column names in your input CSV (case-insensitive).
+  "q_col": "Q",
+  "i_col": "I",
+  "di_col": "dI"
+}

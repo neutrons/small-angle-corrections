@@ -1,0 +1,14 @@
+{
+  // Config actually used — generated 2026-05-28T16:18:42+00:00
+  "n_basis": 12,
+  "n_orders": 10,
+  "length_scale": null,
+  "n_phi": 32,
+  "enforce_nonneg": false,
+  "q_col": "Q",
+  "i_col": "I",
+  "di_col": "dI",
+  "transmission": 0.5,
+  "basis_size": 12,
+  "I0": 2.8028142934438534
+}

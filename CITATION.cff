@@ -1,0 +1,14 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+title: "usans-correct"
+version: 0.1.0
+date-released: "2026-05-28"
+authors:
+  - name: "ORNL USANS Team"
+license: MIT
+references:
+  - type: article
+    title: "Multiple scattering correction for USANS measurements"
+    authors:
+      - family-names: Tung
+    journal: "Journal of Applied Crystallography"

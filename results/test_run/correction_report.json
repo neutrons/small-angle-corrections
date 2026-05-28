@@ -1,0 +1,22 @@
+{
+  "version": "0.1.0",
+  "timestamp": "2026-05-28T16:12:46+00:00",
+  "input_file": "/Volumes/AV Pro2/workspace/workspace/software/usans-correction/examples/data/synthetic_reduced_profile.csv",
+  "config_file": "/Volumes/AV Pro2/workspace/workspace/software/usans-correction/examples/example_config.json5",
+  "output_dir": "/Volumes/AV Pro2/workspace/workspace/software/usans-correction/results/test_run",
+  "parameters": {
+    "transmission": 0.5,
+    "n_basis": 12,
+    "n_orders": 10,
+    "length_scale": null,
+    "n_phi": 32,
+    "enforce_nonneg": false,
+    "I0": 2.8028142934438534
+  },
+  "results": {
+    "I0": 2.8028142934438534,
+    "fit_rms_relative": 0.018756437881544023,
+    "optimizer_cost": 0.011716152119236201,
+    "optimizer_success": true
+  }
+}
