@@ -1,15 +1,16 @@
 """
-Synthetic demonstration of the USANS multiple-scattering correction.
+Synthetic demonstration of the multiple-scattering correction.
 
 Generates a fuzzy-ball primary profile (R=2, sigma=0.5), simulates the
 apparent (multiple-scattered) profile at T=0.5, runs the correction, and
-produces a comparison figure plus a CSV suitable for the usans-ms-correct CLI.
+produces a comparison figure plus a CSV suitable for the
+`small-angle-corrections correct-ms` CLI.
 
 Note on enforce_nonneg: the fuzzy-ball profile is physically non-negative,
 but its Gram-Schmidt polynomial coefficients (alpha1) include negative values.
 The coefficient-level non-negativity bound in enforce_nonneg=True would block
 the correct solution, so this demo uses enforce_nonneg=False.  For smooth
-monotonically-decreasing USANS profiles, enforce_nonneg=True is appropriate.
+monotonically-decreasing small-angle scattering profiles, enforce_nonneg=True is appropriate.
 """
 
 from pathlib import Path
@@ -19,7 +20,7 @@ import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 
-from usans_correct import AlgebraicConvolutionModel
+from small_angle_corrections import AlgebraicConvolutionModel
 
 # ---------------------------------------------------------------------------
 # Parameters
@@ -75,7 +76,7 @@ I_recovered = out['I_true']
 I_fit = out['I_fit']
 
 # ---------------------------------------------------------------------------
-# Save CSV  (Q, I, dI)  with noise for the usans-ms-correct CLI
+# Save CSV  (Q, I, dI)  with noise for `small-angle-corrections correct-ms`
 # ---------------------------------------------------------------------------
 csv_path = OUT_DIR / 'synthetic_reduced_profile.csv'
 header = 'Q,I,dI'
@@ -93,7 +94,7 @@ ax.semilogy(q, I_fit,       'g:',  lw=1.5, label='Fitted apparent')
 ax.semilogy(q, I_recovered, 'r-',  lw=2,   label='Recovered primary')
 ax.set_xlabel('Q (a.u.)')
 ax.set_ylabel('Intensity (a.u.)')
-ax.set_title(f'USANS MS correction  (R={R}, σ={SIGMA}, T={TRANSMISSION})')
+ax.set_title(f'Multiple-scattering correction  (R={R}, σ={SIGMA}, T={TRANSMISSION})')
 ax.legend()
 ax.grid(True, which='both', alpha=0.3)
 fig.tight_layout()

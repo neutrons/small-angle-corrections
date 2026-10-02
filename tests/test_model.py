@@ -1,6 +1,6 @@
 import numpy as np
 import pytest
-from usans_correct import AlgebraicConvolutionModel
+from small_angle_corrections import AlgebraicConvolutionModel
 
 
 def test_forward_shape(model, q_grid, simple_profile):

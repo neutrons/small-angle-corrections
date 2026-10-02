@@ -1,6 +1,6 @@
 import numpy as np
 import pytest
-from usans_correct.corrections.multiple_scattering.basis import GramSchmidtBasis, _trapz_weights
+from small_angle_corrections.corrections.multiple_scattering.basis import GramSchmidtBasis, _trapz_weights
 
 
 def test_orthonormality(q_grid):

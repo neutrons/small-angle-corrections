@@ -2,7 +2,7 @@
 
 import numpy as np
 from pathlib import Path
-from usans_correct import correct
+from small_angle_corrections import correct
 from examples.generate_synthetic import make_synthetic
 
 

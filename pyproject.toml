@@ -3,9 +3,17 @@ requires = ["setuptools>=68", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "usans-correct"
+name = "small-angle-corrections"
 version = "0.1.0"
-description = "Post-processing correction framework for USANS/SANS data"
+description = "Post-processing corrections (multiple scattering, desmearing) for small-angle neutron and X-ray scattering data"
+keywords = [
+    "small-angle scattering",
+    "SANS",
+    "SAXS",
+    "USANS",
+    "multiple scattering",
+    "desmearing",
+]
 readme = "README.md"
 license = {text = "MIT"}
 requires-python = ">=3.9"
@@ -20,7 +28,11 @@ dependencies = [
 dev = ["pytest>=7.0", "pytest-cov"]
 
 [project.scripts]
-usans-correct = "usans_correct.cli:main"
+small-angle-corrections = "small_angle_corrections.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/neutrons/small-angle-corrections"
+Repository = "https://github.com/neutrons/small-angle-corrections"
 
 [tool.setuptools.packages.find]
 where = ["src"]

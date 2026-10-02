@@ -1,4 +1,4 @@
-# Task: Implement USANS Multiple-Scattering Correction Package v0.1
+# Task: Implement Multiple-Scattering Correction Package v0.1 (small-angle-corrections)
 
 ## Your job
 Implement the complete Python package described in Project_Specification.docx.

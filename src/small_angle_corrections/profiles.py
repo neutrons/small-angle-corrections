@@ -8,7 +8,7 @@ import numpy as np
 
 @dataclass
 class Profile:
-    """A reduced USANS/SANS intensity profile."""
+    """A reduced small-angle scattering (SANS/SAXS/USANS) intensity profile."""
 
     q: np.ndarray
     I: np.ndarray

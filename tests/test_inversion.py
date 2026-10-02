@@ -1,5 +1,5 @@
 import numpy as np
-from usans_correct import correct
+from small_angle_corrections import correct
 
 
 def test_correct_returns_dict(q_grid, simple_profile):

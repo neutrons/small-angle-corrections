@@ -7,7 +7,7 @@ from .model import AlgebraicConvolutionModel
 def correct(q, I_apparent, transmission, n_basis=8, n_orders=10,
             length_scale=None, enforce_nonneg=True, n_phi=32):
     """
-    Apply multiple-scattering correction to a USANS intensity curve.
+    Apply multiple-scattering correction to a small-angle scattering intensity curve.
 
     Parameters
     ----------
