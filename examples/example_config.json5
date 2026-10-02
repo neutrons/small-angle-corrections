@@ -1,6 +1,6 @@
 {
   // -----------------------------------------------------------------------
-  // usans-correct configuration
+  // small-angle-corrections configuration (correct-ms subcommand)
   // JSON5: // line comments and /* block comments */ are supported.
   // -----------------------------------------------------------------------
 

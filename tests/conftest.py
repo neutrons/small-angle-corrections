@@ -16,5 +16,5 @@ def simple_profile(q_grid):
 
 @pytest.fixture
 def model(q_grid):
-    from usans_correct import AlgebraicConvolutionModel
+    from small_angle_corrections import AlgebraicConvolutionModel
     return AlgebraicConvolutionModel(q_grid, n_basis=4, n_orders=4, n_phi=16)

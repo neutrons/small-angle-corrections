@@ -19,7 +19,7 @@ def make_synthetic(n_q=80, q_min=1e-4, q_max=1e-2,
     q = np.geomspace(q_min, q_max, n_q)
     I_true = fuzzy_ball(q)
 
-    from usans_correct import AlgebraicConvolutionModel
+    from small_angle_corrections import AlgebraicConvolutionModel
     model = AlgebraicConvolutionModel(q, n_basis=8, n_orders=8)
     alpha1 = model._basis.coefficients(I_true, q * model._length_scale)
     I_apparent = model.forward(alpha1, transmission, I0=1.0)

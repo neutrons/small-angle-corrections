@@ -1,6 +1,6 @@
 import numpy as np
-from usans_correct.corrections.multiple_scattering.basis import GramSchmidtBasis
-from usans_correct.corrections.multiple_scattering.convolution import build_structure_tensor
+from small_angle_corrections.corrections.multiple_scattering.basis import GramSchmidtBasis
+from small_angle_corrections.corrections.multiple_scattering.convolution import build_structure_tensor
 
 
 def test_structure_tensor_shape(q_grid):

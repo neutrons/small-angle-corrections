@@ -4,7 +4,7 @@ from pathlib import Path
 import numpy as np
 from click.testing import CliRunner
 
-from usans_correct.cli import main
+from small_angle_corrections.cli import main
 
 
 def _make_csv(runner_dir, q_grid, profile):

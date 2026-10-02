@@ -1,4 +1,4 @@
-"""Command-line interface: usans-correct"""
+"""Command-line interface: small-angle-corrections"""
 
 import numpy as np
 import click
@@ -12,11 +12,11 @@ from pathlib import Path
 
 
 @click.group()
-@click.version_option(version=__version__, prog_name="usans-correct")
+@click.version_option(version=__version__, prog_name="small-angle-corrections")
 def main():
-    """USANS post-processing correction framework.
+    """Small-angle scattering (SANS/SAXS/USANS) post-processing correction framework.
 
-    Use one of the subcommands below. Run 'usans-correct COMMAND --help'
+    Use one of the subcommands below. Run 'small-angle-corrections COMMAND --help'
     for details on each subcommand.
     """
 
@@ -44,7 +44,7 @@ def correct_ms(input_file, config_file, output_dir,
 
     Reads Q and I from INPUT_FILE (CSV with header row). All correction
     parameters come from CONFIG; --transmission overrides the config value.
-    Writes 8 result files to OUTPUT_DIR.
+    Writes 9 result files to OUTPUT_DIR.
     """
     overrides = {"transmission": cli_transmission} if cli_transmission is not None else {}
     cfg = load_config(config_file, overrides)
@@ -152,7 +152,7 @@ def diagnose(input_file, transmission, verbose):
     diag    = assess(profile, transmission)
 
     click.echo("")
-    click.echo("USANS Diagnostics")
+    click.echo("Small-Angle Scattering Diagnostics")
     click.echo("=" * 40)
     click.echo(f"  Input file   : {input_file}")
     click.echo(f"  Data points  : {diag['n_points']}")
@@ -181,10 +181,10 @@ def desmear(input_file, config_file, output_dir):
     """Slit desmearing correction (not yet implemented).
 
     This subcommand is reserved for a future Bonse-Hart slit desmearing
-    correction. It will be available in a future version of usans-correct.
+    correction. It will be available in a future version of small-angle-corrections.
     """
     click.echo("")
     click.echo("Desmearing is not yet implemented.")
-    click.echo("This feature is planned for a future version of usans-correct.")
-    click.echo("See https://github.com/YOUR_ORG/usans-correct for updates.")
+    click.echo("This feature is planned for a future version of small-angle-corrections.")
+    click.echo("See https://github.com/yrshang/small-angle-corrections for updates.")
     click.echo("")

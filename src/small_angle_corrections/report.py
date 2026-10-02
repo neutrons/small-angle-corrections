@@ -108,8 +108,8 @@ def write_all(
 
 def _write_text_report(path: Path, report: dict, diag: dict) -> None:
     lines = [
-        "USANS Multiple-Scattering Correction Report",
-        "=" * 46,
+        "Small-Angle Scattering Multiple-Scattering Correction Report",
+        "=" * 60,
         f"Version    : {report['version']}",
         f"Timestamp  : {report['timestamp']}",
         f"Input      : {report['input_file']}",
@@ -163,7 +163,7 @@ def _write_plot(path: Path, q, I_app, I_fit, I_corr,
     ax.semilogy(q, I_app,  "b-",  lw=1.5, label="Apparent (input)")
     ax.semilogy(q, I_fit,  "g--", lw=1.2, label="Fitted apparent")
     ax.semilogy(q, I_corr, "r-",  lw=2.0, label="Corrected")
-    title = "USANS Multiple-Scattering Correction"
+    title = "Multiple-Scattering Correction"
     if transmission is not None:
         title += f"  (T = {transmission:.3f})"
     ax.set_title(title)

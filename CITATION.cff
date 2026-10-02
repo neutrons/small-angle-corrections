@@ -1,6 +1,16 @@
 cff-version: 1.2.0
 message: "If you use this software, please cite it as below."
-title: "usans-correct"
+title: "small-angle-corrections"
+abstract: "Post-processing corrections (multiple scattering, desmearing) for small-angle neutron and X-ray scattering data."
+repository-code: "https://github.com/yrshang/small-angle-corrections"
+url: "https://github.com/yrshang/small-angle-corrections"
+keywords:
+  - small-angle scattering
+  - SANS
+  - SAXS
+  - USANS
+  - multiple scattering
+  - desmearing
 version: 0.1.0
 date-released: "2026-05-28"
 authors:

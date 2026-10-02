@@ -1,16 +1,20 @@
-# usans-correction
+# small-angle-corrections
 
-**Multiple-scattering correction for USANS data — step-by-step guide**
+**Post-processing corrections for small-angle scattering data (neutron and X-ray) — step-by-step guide**
 
 ---
 
 ## 1. What This Package Does
 
+`small-angle-corrections` is a toolkit of post-processing corrections for reduced small-angle scattering data — SANS, SAXS, and USANS, from neutron or X-ray instruments. The first supported correction is **multiple-scattering correction**, with ultra-small-angle neutron scattering (USANS) as the first use case. Slit desmearing (for Bonse-Hart USANS instruments) is planned as a future subcommand.
+
+### Multiple-scattering correction
+
 When you measure a sample on a USANS instrument, most neutrons pass straight through and a small fraction scatter once off the structures inside your sample. That single-scattering signal is what you actually want — it tells you the real size and shape of whatever you are studying. The problem is that some neutrons scatter *more than once* before they leave the sample. These multiply-scattered neutrons end up mixed in with the singly-scattered ones, and the mixture looks like a smeared, artificially broadened version of the true signal. The thicker or denser your sample, the worse this effect gets.
 
 This software unmixes the multiply-scattered contribution and gives you back the true single-scattering profile. It does this by building a mathematical model of how multiple scattering smears your data (using a technique called algebraic convolution, described by Tung et al.), then running an optimisation that finds the unsmeared profile that, when re-smeared, best reproduces what you actually measured. You tell it how strongly your sample scatters by providing the *transmission* — the fraction of neutrons that pass through without interacting — and the algorithm takes care of the rest.
 
-At the end you get a corrected data file (your main result), a plot showing the before and after, and a set of diagnostic files that tell you how well the correction worked. The corrected profile can be used directly in any downstream analysis software just like any other reduced USANS dataset.
+At the end you get a corrected data file (your main result), a plot showing the before and after, and a set of diagnostic files that tell you how well the correction worked. The corrected profile can be used directly in any downstream analysis software just like any other reduced dataset.
 
 ---
 
@@ -48,20 +52,20 @@ Follow these steps exactly, one at a time. Each step builds on the previous one.
 Open a terminal and run:
 
 ```bash
-git clone https://github.com/your-org/usans-correction.git
-cd usans-correction
+git clone https://github.com/yrshang/small-angle-corrections.git
+cd small-angle-corrections
 ```
 
-You should now be inside the `usans-correction` folder. You can check by running `ls` (macOS/Linux) or `dir` (Windows) — you should see files like `pyproject.toml`, `README.md`, and a folder called `src`.
+You should now be inside the `small-angle-corrections` folder. You can check by running `ls` (macOS/Linux) or `dir` (Windows) — you should see files like `pyproject.toml`, `README.md`, and a folder called `src`.
 
 > **No git?** You can also download a ZIP from the repository page (green "Code" button → "Download ZIP"), unzip it, and `cd` into the resulting folder.
 
 ### Step 2 — Create a dedicated conda environment
 
-This creates an isolated box called `usans` with Python 3.11 inside it:
+This creates an isolated box called `sac` with Python 3.11 inside it:
 
 ```bash
-mamba create -n usans python=3.11 -y
+mamba create -n sac python=3.11 -y
 ```
 
 Expected output (last few lines):
@@ -72,16 +76,16 @@ Executing transaction: done
 #
 # To activate this environment, use
 #
-#     $ conda activate usans
+#     $ conda activate sac
 ```
 
 ### Step 3 — Activate the environment
 
 ```bash
-conda activate usans
+conda activate sac
 ```
 
-Your terminal prompt should now start with `(usans)` to show the environment is active. **You need to do this every time you open a new terminal.**
+Your terminal prompt should now start with `(sac)` to show the environment is active. **You need to do this every time you open a new terminal.**
 
 ### Step 4 — Install the package
 
@@ -93,32 +97,44 @@ The `-e` flag means "editable install" — changes to the source files take effe
 
 Expected output (last few lines):
 ```
-Successfully installed click-8.x numpy-2.x scipy-1.x usans-correction-0.1.0
+Successfully installed click-8.x numpy-2.x scipy-1.x small-angle-corrections-0.1.0
 ```
 
 ### Step 5 — Verify the installation
 
 ```bash
-usans-correct --help
+small-angle-corrections --help
 ```
 
 Expected output:
 ```
-Usage: usans-correct [OPTIONS]
+Usage: small-angle-corrections [OPTIONS] COMMAND [ARGS]...
 
-  Apply USANS multiple-scattering correction.
+  Small-angle scattering (SANS/SAXS/USANS) post-processing correction
+  framework.
 
-  Reads Q and I from INPUT_FILE (comma-separated, header row required).
-  All correction parameters are read from CONFIG; CLI flags override them.
-  Writes 9 result files to OUTPUT_DIR.
+  Use one of the subcommands below. Run 'small-angle-corrections COMMAND
+  --help' for details on each subcommand.
 
 Options:
-  --input TEXT          Input CSV file with Q, I (and optionally dI) columns.
-  --config TEXT         JSON5 configuration file.
-  --output TEXT         Output directory (created if absent); receives 9
-                        result files.
-  ...
+  --version  Show the version and exit.
+  --help     Show this message and exit.
+
+Commands:
+  correct-ms  Apply multiple-scattering correction.
+  desmear     Slit desmearing correction (not yet implemented).
+  diagnose    Report whether multiple-scattering correction is needed.
 ```
+
+The tool is organised into subcommands:
+
+| Subcommand | What it does |
+|---|---|
+| `correct-ms` | Apply the multiple-scattering correction (Section 5) |
+| `diagnose` | Print a quick assessment of whether correction is needed, without correcting (Section 10) |
+| `desmear` | Reserved for slit desmearing — not yet implemented |
+
+Run `small-angle-corrections COMMAND --help` to see the options for any subcommand.
 
 If you see this, the installation worked. If you see `command not found`, go to the Troubleshooting section.
 
@@ -155,7 +171,7 @@ Q,I,dI
 
 ### Where does the transmission value come from?
 
-The transmission T is measured on your USANS beamline as part of the standard data reduction procedure. It is the ratio of the neutron count rate through your sample to the count rate through an empty cell (or air). It is a number between 0 and 1:
+The transmission T is measured on your beamline as part of the standard data reduction procedure. It is the ratio of the count rate through your sample to the count rate through an empty cell (or air). It is a number between 0 and 1:
 - T = 1.0 means no scattering or absorption at all (not physical, but the theoretical limit)
 - T = 0.9 means 10 % of neutrons were scattered or absorbed
 - T = 0.5 means half the neutrons were scattered or absorbed
@@ -181,7 +197,7 @@ The correction will run without uncertainty information, but the output `correct
 ### The basic command
 
 ```bash
-usans-correct \
+small-angle-corrections correct-ms \
   --input  my_sample.csv \
   --config example_config.json5 \
   --output results/my_sample/
@@ -190,13 +206,13 @@ usans-correct \
 On Windows, replace the `\` line-continuation characters with `^`:
 
 ```
-usans-correct ^
+small-angle-corrections correct-ms ^
   --input  my_sample.csv ^
   --config example_config.json5 ^
   --output results/my_sample/
 ```
 
-### What each flag does
+### What each `correct-ms` flag does
 
 | Flag | What it does |
 |---|---|
@@ -205,13 +221,13 @@ usans-correct ^
 | `--output` | Folder where all results will be saved; created automatically if it does not exist |
 | `--transmission` | *(optional)* Override the transmission value from the config file on the fly |
 | `--verbose` | *(optional)* Print extra information while running so you can see what is happening |
-| `--no-correction` | *(optional)* Run diagnostics only — useful to check your data without actually applying the correction |
-| `--plot` | *(optional)* Attempt to display the summary plot interactively after saving |
+
+To check your data without applying the correction, use the separate `diagnose` subcommand (see Section 10).
 
 ### A complete real example
 
 ```bash
-usans-correct \
+small-angle-corrections correct-ms \
   --input  examples/data/synthetic_reduced_profile.csv \
   --config examples/example_config.json5 \
   --output results/my_first_run/ \
@@ -221,14 +237,15 @@ usans-correct \
 While it runs, you will see output like:
 
 ```
-  transmission     = 0.5
-  n_basis          = 8
-  n_orders         = 10
-  length_scale     = None
-  enforce_nonneg   = False
+  transmission       = 0.5
+  n_basis            = 12
+  n_orders           = 10
+  length_scale       = None
+  n_phi              = 32
+  enforce_nonneg     = False
 Read 80 points from examples/data/synthetic_reduced_profile.csv
-I0               = 0.3121
-Fit RMS relative = 1.983%
+I0               = 0.514
+Fit RMS relative = 1.876%
 Optimizer        : `ftol` termination condition is satisfied.
 Results written to: results/my_first_run/
   coefficients.csv
@@ -275,7 +292,7 @@ Open `examples/example_config.json5` — here is what every field means:
 ```json5
 {
   // -----------------------------------------------------------------------
-  // usans-correction configuration
+  // small-angle-corrections configuration (correct-ms subcommand)
   // -----------------------------------------------------------------------
 
   // *** CHANGE THIS to your measured sample transmission. ***
@@ -329,7 +346,7 @@ Everything else can stay at the default. Once you are comfortable with the softw
 If you are processing several samples with different transmissions, you can override the transmission without editing the config file:
 
 ```bash
-usans-correct \
+small-angle-corrections correct-ms \
   --input  sample_A.csv \
   --config my_config.json5 \
   --output results/sample_A/ \
@@ -413,7 +430,7 @@ I0 recovered: 1.3899  (expected ~1.0)
 
 **What do these numbers mean?**
 
-- The **apparent profile** (what the USANS instrument would measure) differs from the true profile by about 54 % — that is how much multiple scattering has distorted the data in this synthetic example.
+- The **apparent profile** (what the instrument would measure) differs from the true profile by about 54 % — that is how much multiple scattering has distorted the data in this synthetic example.
 - After correction, the **recovered profile** differs from the truth by only about 16 % — a factor of 3 improvement.
 - **I0 recovered** should ideally be 1.0. Values between 0.5 and 2.0 are generally acceptable; it is a scale factor absorbed by the fitting.
 
@@ -433,7 +450,7 @@ For users who want to call the correction from their own Python scripts rather t
 
 ```python
 import numpy as np
-from usans_correction import correct
+from small_angle_corrections import correct
 
 # Load your data (Q in Å⁻¹, I in any consistent units)
 data = np.loadtxt('my_sample.csv', delimiter=',', skiprows=1)
@@ -462,7 +479,7 @@ np.savetxt('corrected.csv',
 For more control, use `AlgebraicConvolutionModel` directly:
 
 ```python
-from usans_correction import AlgebraicConvolutionModel
+from small_angle_corrections import AlgebraicConvolutionModel
 
 model = AlgebraicConvolutionModel(q, n_basis=10, n_orders=8)
 result = model.invert(I_apparent, transmission=0.5, enforce_nonneg=False)
@@ -481,17 +498,15 @@ The need for correction depends on how much your sample scatters. The transmissi
 | 0.3 ≤ T < 0.7 | Significant multiple scattering. Correction is important. |
 | T < 0.3 | Strong multiple scattering. Correction is essential, but interpret results carefully — the fitting problem becomes harder at very low transmission. |
 
-**Not sure whether to correct?** Run the command with `--no-correction` first:
+**Not sure whether to correct?** Run the `diagnose` subcommand first:
 
 ```bash
-usans-correct \
-  --input  my_sample.csv \
-  --config my_config.json5 \
-  --output results/diagnostics_only/ \
-  --no-correction
+small-angle-corrections diagnose \
+  --input        my_sample.csv \
+  --transmission 0.72
 ```
 
-This writes all the output files except the actual corrected profile, so you can inspect `correction_summary.png` to see how different the apparent and corrected profiles would be.
+This reads your data, prints its Q and intensity range, the scattering power μ = −ln(T) and single-scattering probability, and a plain-English assessment of whether correction is needed. It does not apply any correction or write any files.
 
 **A useful rule of thumb:** if the apparent and corrected profiles look nearly identical in the summary plot, the correction is probably not needed. If they look noticeably different, apply it.
 
@@ -499,19 +514,19 @@ This writes all the output files except the actual corrected profile, so you can
 
 ## 11. Troubleshooting
 
-### `command not found: usans-correct`
+### `command not found: small-angle-corrections`
 
 You either did not run `pip install -e .` (go back to Installation Step 4), or your conda environment is not active.
 
 ```bash
-conda activate usans
+conda activate sac
 pip install -e .
-usans-correct --help
+small-angle-corrections --help
 ```
 
 ---
 
-### `No module named usans_correction`
+### `No module named small_angle_corrections`
 
 You are in the wrong conda environment. Check which environments you have:
 
@@ -522,7 +537,7 @@ conda env list
 Activate the correct one:
 
 ```bash
-conda activate usans
+conda activate sac
 ```
 
 ---
@@ -538,7 +553,7 @@ You did not set the transmission value. Open your config file and make sure this
 Or pass it on the command line:
 
 ```bash
-usans-correct --input data.csv --config config.json5 --output out/ --transmission 0.72
+small-angle-corrections correct-ms --input data.csv --config config.json5 --output out/ --transmission 0.72
 ```
 
 ---
@@ -581,13 +596,13 @@ This sometimes happens with profiles that have oscillatory features (form factor
 If you suspect something is broken, run the test suite:
 
 ```bash
-cd usans-correction
+cd small-angle-corrections
 pytest tests/ -v
 ```
 
 Expected output (last line):
 ```
-17 passed in 1.5s
+20 passed in 3.0s
 ```
 
 If any tests fail, note the name of the failing test and the error message, and report it as a GitHub issue.
@@ -600,19 +615,19 @@ If you use this software in a publication, please cite both the software and the
 
 **Plain-text citation:**
 
-> ORNL USANS Team. *usans-correction* (version 0.1.0). 2026.
+> ORNL USANS Team. *small-angle-corrections* (version 0.1.0). 2026. https://github.com/yrshang/small-angle-corrections
 > Based on: Tung et al., "Multiple scattering correction for USANS measurements,"
 > *Journal of Applied Crystallography*.
 
 **BibTeX entry for the software:**
 
 ```bibtex
-@software{usans_correction,
+@software{small_angle_corrections,
   author  = {{ORNL USANS Team}},
-  title   = {usans-correction: Multiple-scattering correction for USANS data},
+  title   = {small-angle-corrections: Post-processing corrections for small-angle scattering data},
   version = {0.1.0},
   year    = {2026},
-  url     = {https://github.com/your-org/usans-correction},
+  url     = {https://github.com/yrshang/small-angle-corrections},
   license = {MIT}
 }
 ```
