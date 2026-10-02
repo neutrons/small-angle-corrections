@@ -31,8 +31,8 @@ dev = ["pytest>=7.0", "pytest-cov"]
 small-angle-corrections = "small_angle_corrections.cli:main"
 
 [project.urls]
-Homepage = "https://github.com/yrshang/small-angle-corrections"
-Repository = "https://github.com/yrshang/small-angle-corrections"
+Homepage = "https://github.com/neutrons/small-angle-corrections"
+Repository = "https://github.com/neutrons/small-angle-corrections"
 
 [tool.setuptools.packages.find]
 where = ["src"]

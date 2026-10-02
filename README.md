@@ -52,7 +52,7 @@ Follow these steps exactly, one at a time. Each step builds on the previous one.
 Open a terminal and run:
 
 ```bash
-git clone https://github.com/yrshang/small-angle-corrections.git
+git clone https://github.com/neutrons/small-angle-corrections.git
 cd small-angle-corrections
 ```
 
@@ -615,7 +615,7 @@ If you use this software in a publication, please cite both the software and the
 
 **Plain-text citation:**
 
-> ORNL USANS Team. *small-angle-corrections* (version 0.1.0). 2026. https://github.com/yrshang/small-angle-corrections
+> ORNL USANS Team. *small-angle-corrections* (version 0.1.0). 2026. https://github.com/neutrons/small-angle-corrections
 > Based on: Tung et al., "Multiple scattering correction for USANS measurements,"
 > *Journal of Applied Crystallography*.
 
@@ -627,7 +627,7 @@ If you use this software in a publication, please cite both the software and the
   title   = {small-angle-corrections: Post-processing corrections for small-angle scattering data},
   version = {0.1.0},
   year    = {2026},
-  url     = {https://github.com/yrshang/small-angle-corrections},
+  url     = {https://github.com/neutrons/small-angle-corrections},
   license = {MIT}
 }
 ```

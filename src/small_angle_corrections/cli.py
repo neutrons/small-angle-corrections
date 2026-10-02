@@ -186,5 +186,5 @@ def desmear(input_file, config_file, output_dir):
     click.echo("")
     click.echo("Desmearing is not yet implemented.")
     click.echo("This feature is planned for a future version of small-angle-corrections.")
-    click.echo("See https://github.com/yrshang/small-angle-corrections for updates.")
+    click.echo("See https://github.com/neutrons/small-angle-corrections for updates.")
     click.echo("")

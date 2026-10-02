@@ -2,8 +2,8 @@ cff-version: 1.2.0
 message: "If you use this software, please cite it as below."
 title: "small-angle-corrections"
 abstract: "Post-processing corrections (multiple scattering, desmearing) for small-angle neutron and X-ray scattering data."
-repository-code: "https://github.com/yrshang/small-angle-corrections"
-url: "https://github.com/yrshang/small-angle-corrections"
+repository-code: "https://github.com/neutrons/small-angle-corrections"
+url: "https://github.com/neutrons/small-angle-corrections"
 keywords:
   - small-angle scattering
   - SANS
